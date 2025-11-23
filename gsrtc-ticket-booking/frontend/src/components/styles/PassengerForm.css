@@ -1,0 +1,24 @@
+.passenger-form {
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  width: 270px;
+  margin-bottom: 20px;
+}
+
+.passenger-entry {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+input, select {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.boarding-toggle {
+  margin-top: 5px;
+}
