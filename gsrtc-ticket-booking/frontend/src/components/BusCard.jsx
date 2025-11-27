@@ -18,11 +18,8 @@ const BusCard = ({ result }) => {
       <div className="bus-details">
         <h3>{result.tripCode}</h3>
         <h3>{result.routeName}</h3>
-        <p>{result.busType}</p>
-        {/* <p>
-          {bus.source}{" - "}
-          {bus.destination}
-        </p> */}
+        <p>{result.classType}</p>
+        <p>{result.departureTime}{" - "}{result.destinationTime}</p>
         <p>Fare: ₹{result.seatRate}</p>
       </div>
 
