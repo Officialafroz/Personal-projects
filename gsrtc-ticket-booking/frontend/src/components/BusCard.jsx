@@ -16,9 +16,21 @@ const BusCard = ({ result }) => {
   return (
     <div className="bus-card">
       <div className="bus-details">
-        <h3>{result.tripCode}</h3>
-        <h3>{result.routeName}</h3>
-        <p>{result.classType}</p>
+        <div className="left-cont">
+          <h3>{result.tripCode}</h3>
+          <p>{result.classType}</p>
+        </div>
+
+        <div className="bus-desc">
+          <h3>{result.routeName}</h3>
+          <p className="route-via">via</p>
+          <span>[</span>
+          {result.stops.map((stop, index) => (
+            <span key={index}>{stop.stopName} </span>
+          ))}
+          <span>]</span>
+        </div>
+
         <p>{result.departureTime}{" - "}{result.destinationTime}</p>
         <p>Fare: ₹{result.seatRate}</p>
       </div>
