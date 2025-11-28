@@ -29,7 +29,9 @@
 
 .bus-details {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 88%;
   gap: 3rem;
 }
 
@@ -38,11 +40,26 @@
   margin-bottom: 0.3rem;
   font-weight: 600;
   color: black;
-
 }
 
 .bus-details p {
-  color: green;
+  color: black;
+  margin: 0;
+}
+
+.left-cont {
+  text-align: left;
+}
+
+.bus-desc {
+  width: 30%;
+  text-align: center;
+}
+
+.bus-desc .route-via {
+  color: black;
+  font-weight: 600;
+  margin: 0;
 }
 
 .book-section {
