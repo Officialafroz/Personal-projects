@@ -15,37 +15,6 @@ const BusSearchForm = () => {
 
   const [results, setResults] = useState([]);
 
-  const buses = [
-    {
-      source: "Palanpur",
-      destination: "Gandhinagar",
-      busNumber: "144TRDKSNEXP51",
-      type: "Express (Non AC Seater)",
-      departureTime: "9:30 am",
-      duration: "02:30",
-      price: "68",
-      availableSeats: 20,
-    }, {
-      source: "Palanpur",
-      destination: "Gandhinagar",
-      busNumber: "144TRDKSNEXP51",
-      type: "Express (Non AC Seater)",
-      departureTime: "9:30 am",
-      duration: "02:30",
-      price: "68",
-      availableSeats: 20,
-    }, {
-      source: "Ahmedabad",
-      destination: "Surat",
-      busNumber: "243AHDSRTEXP22",
-      type: "Sleeper (AC)",
-      departureTime: "6:45 pm",
-      duration: "06:15",
-      price: "68",
-      availableSeats: 15,
-    },
-  ];
-
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setForm((prev) => ({
