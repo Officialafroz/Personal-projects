@@ -49,9 +49,10 @@ public class SearchBusService {
         List<RouteStops> destinationStops = stopsRepository.findAllByStopName(destination);
 
         for (Trip trip : dateTrips) {
-            System.out.println(trip);
-            BusRoute route = trip.getRoute(); // assuming Trip has getBusRoute()
-            System.out.println();
+            BusRoute route = trip.getRoute();
+            List<RouteStops> stops = stopsRepository.findByBusRouteRouteId(route.getRouteId());
+            stops.removeFirst();
+            stops.removeLast();
 
             // Find source stop ON THIS route
             RouteStops sourceStop = sourceStops.stream()
@@ -65,9 +66,6 @@ public class SearchBusService {
                     .findFirst()
                     .orElse(null);
 
-            System.out.println(sourceStop);
-            System.out.println(destinationStop);
-
             // Skip if either stop missing or order wrong
             if (sourceStop == null || destinationStop == null) continue;
             if (sourceStop.getStopOrder() >= destinationStop.getStopOrder()) continue;
@@ -78,8 +76,8 @@ public class SearchBusService {
             dto.setRouteName(route.getRouteName());
             dto.setTripCode(trip.getTripCode());
             dto.setClassType(trip.getBus().getBusType());
-            System.out.println(route);
-            System.out.println(route.getClassType());
+            dto.setStops(stops);
+            System.out.println(route.getRouteName() + " : " + stops);
             dto.setDepartureTime(extractTime(trip.getDepartureTime()));
             dto.setDestinationTime(extractTime(trip.getDestinationTime()));
             dto.setSeatRate(fare);
