@@ -3,7 +3,7 @@ import StopManagement from "./Stop-Management/StopManagement";
 
 const RouteItem = ({ route, deleteRoute, updateRoute }) => {
   const [showStops, setShowStops] = useState(false);
-  console.log(route); 
+  console.log(route);
 
   return (
     <div className="route-item">
@@ -11,9 +11,6 @@ const RouteItem = ({ route, deleteRoute, updateRoute }) => {
         <div className="route-info-wrapper">
           <p>{route.routeName}</p>
           <p>{route.classType}</p>
-          <p>{route.distance}</p>
-          <p>{route.duration}</p>
-
           <div className="route-actions">
             <button onClick={() => setShowStops(!showStops)}>
               {showStops ? "Hide Stops" : "Manage Stops"}
