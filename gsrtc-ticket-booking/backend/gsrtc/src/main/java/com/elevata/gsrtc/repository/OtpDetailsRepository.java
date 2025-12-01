@@ -11,5 +11,5 @@ import java.util.Optional;
 @Repository
 public interface OtpDetailsRepository extends JpaRepository<OtpDetails, Integer> {
     Optional<OtpDetails> findOtpDetailsByUser(User user);
-    OtpDetails findOtpDetailByOtp(Integer otp);
+    OtpDetails findOtpDetailByOtp(String otp);
 }
