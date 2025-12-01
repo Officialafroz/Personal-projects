@@ -1,7 +1,7 @@
 // UserLogin.jsx
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./styles/AuthForm.css";
+import "../components/styles/AuthForm.css";
 import axios from "axios";
 import { AppContext } from "../store/AppContext";
 
@@ -43,21 +43,6 @@ const UserLogin = () => {
       alert("Invalid or expired OTP");
     }
   };
-
-  // const handleSendOtp = (e) => {
-  //   e.preventDefault();
-  //   if (!email.trim()) return alert("Enter email");
-  //   setShowOtpField(true);
-  // };
-
-  // const handleVerify = () => {
-  //   if (otp === "1234") {  // mock check
-  //     setUser({ name: "User", email });
-  //     navigate("/bus-booking");
-  //   } else {
-  //     alert("Incorrect OTP");
-  //   }
-  // };
 
   return (
     <>
