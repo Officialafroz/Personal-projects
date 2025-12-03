@@ -33,13 +33,13 @@ public class OtpDetailsService {
         }
     }
 
-//    public List<OtpDetails> findOtpDetailsListByUserId(int userId) {
-//        return otpDetailsRepository.findAllById(userId);
-//    }
+    public OtpDetails findOtpDetailByOtp(String otp) {
+        return otpDetailsRepository.findOtpDetailByOtp(otp);
+    }
 
     public void save(OtpDetails otpDetails) {
         otpDetailsRepository.save(otpDetails);
-        System.out.println("User has been added.");
+        System.out.println("Otp saved to DB.");
     }
 
     public void deleteById(int otpId) {
