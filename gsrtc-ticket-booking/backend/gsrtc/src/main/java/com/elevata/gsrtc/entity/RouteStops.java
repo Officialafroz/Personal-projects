@@ -24,6 +24,9 @@ public class RouteStops {
     @Column(name = "distance_from_start")
     private double distanceFromStart;
 
+    @Column(name = "duration")
+    private int duration;
+
     @Column(name = "fare")
     private double fare;
 
