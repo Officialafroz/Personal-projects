@@ -25,7 +25,7 @@ public class PassengerService {
     }
 
     public List<Passenger> findByBookingId(int bookingId) {
-        return passengerRepository.findByBookingBookingId(bookingId);
+        return passengerRepository.findAllByBookingBookingId(bookingId);
     }
 
     public Passenger findById(int passengerId) {

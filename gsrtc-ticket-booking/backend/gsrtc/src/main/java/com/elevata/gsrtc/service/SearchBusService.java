@@ -1,8 +1,6 @@
 package com.elevata.gsrtc.service;
 
-import com.elevata.gsrtc.dto.SearchDTO;
 import com.elevata.gsrtc.dto.SearchResultDTO;
-import com.elevata.gsrtc.dto.TripDTO;
 import com.elevata.gsrtc.entity.BusRoute;
 import com.elevata.gsrtc.entity.RouteStops;
 import com.elevata.gsrtc.entity.Trip;
@@ -17,19 +15,20 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class SearchBusService {
     private TripRepository tripRepository;
     private RouteStopsRepository stopsRepository;
     private BusRouteRepository busRouteRepository;
+    private FareService fareService;
 
     @Autowired
-    public SearchBusService(TripRepository tripRepository, RouteStopsRepository stopsRepository, BusRouteRepository busRouteRepository) {
+    public SearchBusService(TripRepository tripRepository, RouteStopsRepository stopsRepository, BusRouteRepository busRouteRepository, FareService fareService) {
         this.tripRepository = tripRepository;
         this.stopsRepository = stopsRepository;
         this.busRouteRepository = busRouteRepository;
+        this.fareService = fareService;
     }
 
     public List<SearchResultDTO> getSearchResult(
@@ -70,7 +69,7 @@ public class SearchBusService {
             if (sourceStop == null || destinationStop == null) continue;
             if (sourceStop.getStopOrder() >= destinationStop.getStopOrder()) continue;
 
-            double fare = calcSeatRate(sourceStop, destinationStop);
+            double fare = fareService.calcSeatRate(sourceStop, destinationStop);
 
             SearchResultDTO dto = new SearchResultDTO();
             dto.setRouteName(route.getRouteName());
@@ -87,10 +86,6 @@ public class SearchBusService {
         }
 
         return tripDTOs;
-    }
-
-    public double calcSeatRate(RouteStops source, RouteStops destination) {
-        return destination.getFare() - source.getFare();
     }
 
     public String extractTime(LocalDateTime dateTime) {

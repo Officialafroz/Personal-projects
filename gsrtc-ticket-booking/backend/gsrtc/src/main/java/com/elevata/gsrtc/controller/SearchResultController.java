@@ -19,6 +19,7 @@ public class SearchResultController {
     public SearchResultController(SearchBusService searchBusService) {
         this.searchBusService = searchBusService;
     }
+
     @GetMapping("/results")
     public List<SearchResultDTO> getBuses(
             @RequestParam LocalDate journeyDate,

@@ -33,25 +33,34 @@ public class BusRouteStopsService {
             stopDTO.setStopName(stop.getStopName());
             stopDTO.setStopOrder(stop.getStopOrder());
             stopDTO.setDistanceFromStart(stop.getDistanceFromStart());
+            stopDTO.setDuration(stop.getDuration());
             stopDTO.setFare(stop.getFare());
 
             stopDTOS.add(stopDTO);
         });
 
-        System.out.println(stopDTOS);
+//        System.out.println(stopDTOS);
 
         return stopDTOS;
     }
 
     public String save(RouteStopDTO stopDTO) {
-        Optional<BusRoute> route = busRouteRepository.findById(stopDTO.getRouteId());
+        BusRoute route = busRouteRepository.findById(stopDTO.getRouteId());
 
         RouteStops stop = new RouteStops();
+        System.out.println("Route dur: " + route.getDuration());
+        System.out.println("Route dis: " + route.getDistance());
+        System.out.println("Stop dur: " + stop.getDistanceFromStart());
+        int duration = generateDuration(route.getDuration(),
+                route.getDistance(), stopDTO.getDistanceFromStart());
+        System.out.println(duration);
+
         stop.setStopName(stopDTO.getStopName());
         stop.setStopOrder(stopDTO.getStopOrder());
         stop.setDistanceFromStart(stopDTO.getDistanceFromStart());
+        stop.setDuration(duration);
         stop.setFare(stopDTO.getFare());
-        route.ifPresent(stop::setBusRoute);
+        stop.setBusRoute(route);
 
         routeStopsRepository.save(stop);
         return "Stop saved.";
@@ -60,5 +69,9 @@ public class BusRouteStopsService {
     public void delete(String stopName) {
         RouteStops stop = routeStopsRepository.findByStopName(stopName);
         routeStopsRepository.delete(stop);
+    }
+
+    public int generateDuration(int routeDuration, double routeDistance, double stopDistance) {
+        return (int) ((routeDuration/routeDistance) * stopDistance);
     }
 }

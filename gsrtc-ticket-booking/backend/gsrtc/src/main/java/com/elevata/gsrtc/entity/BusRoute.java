@@ -48,13 +48,4 @@ public class BusRoute {
         this.startPoint = startPoint;
         this.endPoint = endPoint;
     }
-
-//    public void addStops(RouteStops routeStops) {
-//        if (routeStopsList.isEmpty()) {
-//            routeStopsList = new ArrayList<>();
-//        }
-//
-//        routeStopsList.add(routeStops);
-//        routeStops.setBusRoute(this);
-//    }
 }

@@ -27,11 +27,9 @@ public class LoginService {
         String email = emailRequestDTO.getEmail();
         System.out.println(email);
 
-        Optional<User> userOptional = userService.findUserByEmail(email);
+        User user = userService.findUserByEmail(email);
 
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-
+        if (user != null) {
             String otp = String.valueOf(OtpService.generateOtp());
 
             OtpDetails otpDetail = new OtpDetails();
@@ -49,12 +47,9 @@ public class LoginService {
     public String verify(OtpRequestDTO otpRequest) {
         String email = otpRequest.getEmail();
         System.out.println(email);
-        Optional<User> optionalUser = userService.findUserByEmail(email);
+        User user = userService.findUserByEmail(email);
 
-        if (optionalUser.isPresent()) {
-            System.out.println(optionalUser.get());
-
-            User user = optionalUser.get();
+        if (user != null) {
             Optional<OtpDetails> optionalOtpDetails = otpDetailsService.getOtpDetailsByUser(user);
 
             if (optionalOtpDetails.isPresent()) {

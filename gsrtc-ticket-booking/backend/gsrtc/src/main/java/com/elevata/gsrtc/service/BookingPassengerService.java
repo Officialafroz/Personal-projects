@@ -89,5 +89,4 @@ public class BookingPassengerService {
         // 5. Calculate fare correctly
         return fareService.calcSeatRate(sourceStop, destinationStop);
     }
-
 }

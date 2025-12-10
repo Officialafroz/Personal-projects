@@ -34,7 +34,7 @@ public class BusTripService {
 
     public void save(BusTripDTO busTripDTO) {
         Bus bus = busRepository.findByBusNumber(busTripDTO.getBusNumber());
-        Optional<BusRoute> route = routeRepository.findById(busTripDTO.getRouteId());
+        Optional<BusRoute> route = Optional.ofNullable(routeRepository.findById(busTripDTO.getRouteId()));
         Optional<BusDepot> busDepot = busDepotRepository.findById(busTripDTO.getDepotId());
 
         Trip trip = new Trip();
@@ -42,13 +42,14 @@ public class BusTripService {
         String startingPoint = route.map(BusRoute::getStartPoint).orElse(null);
         String endingPoint = route.map(BusRoute::getEndPoint).orElse(null);
 
-        if (route.isPresent() || busDepot.isPresent()) {
+        if (route.isPresent()) {
             BusRoute busRoute = route.get();
             startingPoint = busRoute.getStartPoint();
             endingPoint = busRoute.getEndPoint();
             trip.setRoute(busRoute);
-            trip.setBusDepot(busDepot.get());
         }
+
+        busDepot.ifPresent(trip::setBusDepot);
 
 
         String tripCode = generateTripCode(
@@ -104,7 +105,7 @@ public class BusTripService {
 
     public List<TripDTO> findAllByDepotId(int depotId) {
         List<Trip> trips = tripRepository.findAllByBusDepotDepotId(depotId);
-        System.out.println(trips);
+//        System.out.println(trips);
         List<TripDTO> tripDTOS = new ArrayList<>(trips.size());
 
         for (Trip trip : trips) {
