@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class UserBooking {
-    private int userId;
+public class UserBookingDTO {
+    private String email;
     private String tripCode;
+    private String journeyDate;
+    private double totalFare;
 }
