@@ -20,9 +20,10 @@ public class BusRouteController {
     }
 
     @PostMapping("/addRoute")
-    public ResponseEntity<RouteDTO> addRoute(@RequestBody RouteDTO routeDTO) {
-        busRouteService.addRoute(routeDTO);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<String> addRoute(@RequestBody RouteDTO routeDTO,
+                                           @RequestParam String duration) {
+        busRouteService.addRoute(routeDTO, duration);
+        return ResponseEntity.ok("Route has been added to DB.");
     }
 
     @GetMapping("/routes")
