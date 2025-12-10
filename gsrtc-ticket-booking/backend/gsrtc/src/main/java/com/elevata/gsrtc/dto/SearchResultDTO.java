@@ -1,11 +1,13 @@
 package com.elevata.gsrtc.dto;
 
+import com.elevata.gsrtc.entity.RouteStops;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,6 +15,7 @@ import java.time.LocalDateTime;
 @Setter
 public class SearchResultDTO {
     private String routeName;
+    private List<RouteStops> stops;
     private String tripCode;
     private String classType;
     private String departureTime;
