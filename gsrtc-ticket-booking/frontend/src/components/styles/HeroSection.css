@@ -1,11 +1,11 @@
 /** @format */
 
 .hero {
-  top: 90px;
+  position: relative;
+  top: 0;
   background: url("https://images.unsplash.com/photo-1605448510829-60c6b8596b0e?auto=format&fit=crop&w=1600&q=80")
     center/cover no-repeat;
   /* height: 85vh; */
-  position: relative;
   color: white;
 }
 
@@ -20,7 +20,7 @@
   justify-content: center; */
   align-items: center;
   text-align: center;
-  padding: 1rem;
+  padding: 100px 1rem 1rem 1rem;
 }
 
 .overlay h1 {

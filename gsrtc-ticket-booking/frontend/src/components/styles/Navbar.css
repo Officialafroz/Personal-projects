@@ -2,24 +2,32 @@
 
 .navbarr {
   /* display: none; */
-  width: 100%;
-  position: fixed;
-  top: 0;
-  z-index: 100;
-  background: linear-gradient(to right top);
-  backdrop-filter: blur(4px);
+  /* width: 100%; */
+  /* background: linear-gradient(to right top);
+  backdrop-filter: blur(4px); */
 }
 
 .upper-nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: fit-content;
   padding: 0.2rem 2rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   color: black;
+  z-index: 101;
+  background: linear-gradient(to center top);
+  backdrop-filter: blur(4px);
 }
 
 .lower-nav {
-  display: none;
+  position: relative;
+  top: 65px;
+  background: linear-gradient(to center top);
+  backdrop-filter: blur(4px);
+  z-index: 100;
 }
 
 .navbar-logo h2 {
@@ -34,8 +42,7 @@
 }
 
 .navbar-links {
-  display: none;
-  height: 36px;
+  height: 65px;
   margin-bottom: 0;
   list-style: none;
   display: flex;

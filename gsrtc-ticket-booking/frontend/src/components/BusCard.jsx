@@ -1,12 +1,17 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import SeatSelectionModal from "./Booking/SeatSelectionModal";
 import "./styles/BusCard.css";
+import { AppContext } from "../store/AppContext";
+import axios from "axios";
 
 const BusCard = ({ result }) => {
   const [showModal, setShowModal] = useState(false);
+  const { setTripCode } = useContext(AppContext);
+  const tripCode = result.tripCode;
 
   const handleSeatSelect = () => {
     setShowModal(true);
+    setTripCode(tripCode);
   };
 
   const handleCloseModal = () => {
@@ -17,7 +22,7 @@ const BusCard = ({ result }) => {
     <div className="bus-card">
       <div className="bus-details">
         <div className="left-cont">
-          <h3>{result.tripCode}</h3>
+          <h3>{tripCode}</h3>
           <p>{result.classType}</p>
         </div>
 
@@ -39,7 +44,10 @@ const BusCard = ({ result }) => {
         {result.vacantSeats} Seats
       </button>
 
-      {showModal && <SeatSelectionModal result={result} onClose={handleCloseModal} />}
+      {showModal && <SeatSelectionModal
+        stops={result.stops}
+        onClose={handleCloseModal}
+      />}
     </div>
   );
 };

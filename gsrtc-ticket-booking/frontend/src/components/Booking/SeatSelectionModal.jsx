@@ -4,11 +4,16 @@ import PassengerForm from "./PassengerForm";
 import PaymentSummary from "./PaymentSummary";
 import "../styles/SeatSelectionModal.css";
 
-const SeatSelectionModal = ({ isOpen, onClose, bus }) => {
+const SeatSelectionModal = ({ stops, isOpen, onClose, bus }) => {
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [passengerData, setPassengerData] = useState([]);
+  const [total, setTotal] = useState(0)
 
   if (isOpen) return null;
+
+  const handleStops = () => {
+    console.log(result.stops);
+  }
 
   const toggleSeat = (seat) => {
     setSelectedSeats((prev) =>
@@ -22,8 +27,6 @@ const SeatSelectionModal = ({ isOpen, onClose, bus }) => {
     setPassengerData(data);
   };
 
-  const totalAmount = selectedSeats.length * (125 || 0);
-
   return (
     <div className="modal-overlay">
       <div className="modal-container">
@@ -35,10 +38,13 @@ const SeatSelectionModal = ({ isOpen, onClose, bus }) => {
         <div className="modal-body">
           <SeatLayout selectedSeats={selectedSeats} toggleSeat={toggleSeat} />
           <PassengerForm
+            stops={stops}
+            total={total}
+            setTotal={setTotal}
             selectedSeats={selectedSeats}
             onPassengerDataChange={handlePassengerData}
           />
-          {/* <PaymentSummary totalAmount={totalAmount} /> */}
+          <PaymentSummary totalAmount={total} />
         </div>
       </div>
     </div>

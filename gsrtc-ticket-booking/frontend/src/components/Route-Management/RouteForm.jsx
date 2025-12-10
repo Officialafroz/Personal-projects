@@ -7,6 +7,8 @@ const RouteForm = ({ addRoute }) => {
   const [startingPoint, setStartingPoint] = useState("");
   const [endingPoint, setEndingPoint] = useState("");
   const [classType, setClassType] = useState("");
+  const [distance, setDistance] = useState();
+  const [duration, setDuration] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -14,7 +16,7 @@ const RouteForm = ({ addRoute }) => {
     const newRouteName = `${startingPoint} to ${endingPoint}`;
     setRouteName(newRouteName);
 
-    if (!newRouteName || !startingPoint || !endingPoint) {
+    if (!newRouteName || !startingPoint || !endingPoint || !duration || !distance) {
       alert("Please fill all fields");
       return;
     }
@@ -24,11 +26,12 @@ const RouteForm = ({ addRoute }) => {
       startingPoint,
       endingPoint,
       classType,
+      distance, 
       depotId: admin.depotId
     };
-    console.log(newRoute);
+    console.log(newRoute, duration);
 
-    addRoute(newRoute);
+    addRoute(newRoute, duration);
 
     setRouteName("");
     setStartingPoint("");
@@ -51,7 +54,7 @@ const RouteForm = ({ addRoute }) => {
         value={endingPoint}
         onChange={(e) => setEndingPoint(e.target.value)}
       />
-      {/* <input
+      <input
         type="number"
         placeholder="Distance (e.g. 265 km)"
         value={distance}
@@ -62,7 +65,7 @@ const RouteForm = ({ addRoute }) => {
         placeholder="Duration (e.g. 5h 30m)"
         value={duration}
         onChange={(e) => setDuration(e.target.value)}
-      /> */}
+      />
       <select
         value={classType}
         onChange={(e) => setClassType(e.target.value)}

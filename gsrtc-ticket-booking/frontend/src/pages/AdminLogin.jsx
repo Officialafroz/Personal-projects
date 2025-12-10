@@ -1,15 +1,20 @@
 // AdminLogin.jsx
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./styles/AuthForm.css"
+import "../components/styles/AuthForm.css";
 import axios from "axios";
 import { AppContext } from "../store/AppContext";
+import AdminPages from "./AdminPages";
 
 const AdminLogin = () => {
-  const {setAdmin} = useContext(AppContext);
+  const { admin, setAdmin } = useContext(AppContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setAdmin(null);  // ensures login page always shows first
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -30,12 +35,16 @@ const AdminLogin = () => {
 
   return (
     <>
-      <form className="login-form" onSubmit={handleLogin}>
-        <h2>Admin Login</h2>
-        <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-        <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
-        <button type="submit">Login</button>
-      </form>
+      {!admin ? (
+        <form className="login-form" onSubmit={handleLogin}>
+          <h2>Admin Login</h2>
+          <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
+          <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+          <button type="submit">Login</button>
+        </form>
+      ) : (
+        <AdminPages />
+      )}
     </>
   );
 };

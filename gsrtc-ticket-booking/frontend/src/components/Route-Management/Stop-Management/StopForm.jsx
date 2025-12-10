@@ -22,7 +22,6 @@ const StopForm = ({ addStop, routeId }) => {
     console.log(routeId);
 
     const newStop = {
-      id: Date.now(),
       stopName,
       stopOrder,
       distanceFromStart,

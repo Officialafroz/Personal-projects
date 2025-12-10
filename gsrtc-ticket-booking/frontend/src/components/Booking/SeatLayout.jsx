@@ -1,31 +1,44 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "../styles/SeatLayout.css";
 import { MdEventSeat } from "react-icons/md";
+import axios from "axios";
+import { AppContext } from "../../store/AppContext";
 
 const SeatLayout = ({ selectedSeats, toggleSeat }) => {
   const seats = Array.from({ length: 46 }, (_, i) => i + 1);
-  // const layout = generateSeatLayout(seats)
+  const { tripCode } = useContext(AppContext);
 
-  // function generateSeatLayout(totalSeats = 46) {
-  //   const seatTypes = ['W', 'A', 'A', 'M', 'W']; // Window, Aisle, Aisle, Middle, Window
-  //   const layout = [];
+  const [bookedSeats, setBookedSeats] = useState([]);
 
-  //   for (let i = 0; i < totalSeats; i++) {
-  //     const seatNumber = i + 1;
-  //     const type = seatTypes[i % seatTypes.length];
-  //     layout.push(`${seatNumber}${type}`);
-  //   }
+  useEffect(() => {
+    if (!tripCode) return;
 
-  //   return layout;
-  // }
+    const fetchBookedSeats = async () => {
+      const res = await axios.get("/api/seats/map", {
+        params: { tripCode }
+      });
+
+      setBookedSeats(res.data); // array of booked seat numbers
+      console.log(res.data);
+    };
+
+    fetchBookedSeats();
+  }, [tripCode]);
+
+  const isBooked = (seat) => bookedSeats.includes(seat);
 
   return (
     <div className="seat-layout">
-      {seats.map((seat, index) => (
+      {seats.map((seat) => (
         <div
-          key={index}
-          className={`seat ${selectedSeats.includes(seat) ? "selected" : ""}`}
-          onClick={() => toggleSeat(seat)}
+          key={seat}
+          className={`seat 
+            ${selectedSeats.includes(seat) ? "selected" : ""}
+            ${isBooked(seat) ? "booked" : ""}
+          `}
+          onClick={() => {
+            if (!isBooked(seat)) toggleSeat(seat);
+          }}
         >
           <MdEventSeat />
           {seat}

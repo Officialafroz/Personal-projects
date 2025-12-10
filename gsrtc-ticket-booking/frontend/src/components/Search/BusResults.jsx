@@ -1,7 +1,7 @@
 import BusCard from "../BusCard";
 import "../styles/BusResults.css";
 
-const BusResults = ({ results }) => {
+const BusResults = ({ results, destination }) => {
   if (results.length === 0) {
     return (
       <div className="no-results">
@@ -13,7 +13,7 @@ const BusResults = ({ results }) => {
   return (
     <div className="bus-results">
       {results.map((result, index) => (
-        <BusCard key={index} result={result} />
+        <BusCard key={index} result={result} destination={destination} />
       ))}
     </div>
   );

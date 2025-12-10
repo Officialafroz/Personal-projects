@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "../styles/BusSearchForm.css";
 import BusResults from "./BusResults";
 import axios from "axios";
+import { AppContext } from "../../store/AppContext";
 
 const BusSearchForm = () => {
+  const { setBusSearch, setPassengers } = useContext(AppContext);
   const [form, setForm] = useState({
     from: "",
     to: "",
@@ -32,6 +34,7 @@ const BusSearchForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setPassengers([]);
     const res = await axios.get("/api/searchBus/results", {
       params: {
         journeyDate: form.date,
@@ -40,13 +43,13 @@ const BusSearchForm = () => {
       }
     });
 
-    // const filtered = buses.filter((b) => !(
-    //   b.source.toLowerCase() === form.from.toLowerCase() &&
-    //   b.destination.toLowerCase() === form.to.toLowerCase()
-    // ));
-
     console.log(res.data);
 
+    setBusSearch({
+      source: form.from,
+      destination: form.to,
+      journeyDate: form.date
+    })
     setResults(res.data);
   };
 
@@ -115,7 +118,7 @@ const BusSearchForm = () => {
       </form>
 
       {/* Results Section */}
-      <BusResults results={results} />
+      <BusResults results={results} destination={form.to} />
     </>
   );
 };

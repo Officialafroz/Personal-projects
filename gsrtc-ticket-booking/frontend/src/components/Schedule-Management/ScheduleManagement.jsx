@@ -142,7 +142,7 @@ const ScheduleManagement = () => {
             <option value="">Select Route</option>
             {routes.map((r, index) => (
               <option key={index} value={r.routeName}>
-                {r.routeName}
+                {r.routeName + " (" + r.classType + ")"}
               </option>
             ))}
           </select>

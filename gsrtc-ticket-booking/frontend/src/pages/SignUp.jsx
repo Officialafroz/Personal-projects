@@ -46,7 +46,8 @@ const SignUp = ({ setUser }) => {
       await axios.post("/api/user/add", form);
 
       console.log(userData + ' verification msg.');
-      const user = { email };
+      const name = form.name;
+      const user = { name, email };
       setUser(user);
       navigate("/");
     } catch (err) {

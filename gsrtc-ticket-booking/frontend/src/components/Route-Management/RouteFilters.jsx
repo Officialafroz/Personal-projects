@@ -13,6 +13,7 @@ const RouteFilters = ({ setSearchTerm, setFilterClass }) => {
         <option value="Sleeper">Sleeper</option>
         <option value="AC">AC</option>
       </select>
+      <button type="submit">Search</button>
     </div>
   );
 };

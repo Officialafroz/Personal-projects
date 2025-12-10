@@ -1,47 +1,61 @@
 import { useState } from "react";
 import "../styles/BookingCancellation.css";
+import axios from "axios";
 
 const BookingCancellation = () => {
   const [pnr, setPnr] = useState("");
   const [foundBooking, setFoundBooking] = useState(null);
   const [cancelledBookings, setCancelledBookings] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [booking, setBooking] = useState([]);
 
   // Mock bookings data
-  const bookings = [
-    {
-      pnr: "GS123456",
-      source: "Ahmedabad",
-      destination: "Surat",
-      journeyDate: "2025-11-10",
-      tripCode: "GJ-EXP123",
-      busClass: "Express",
-      seatNumbers: ["A1", "A2"],
-      passengers: ["Afroz Mansuri", "Ali Khan"],
-      totalFare: 650,
-    },
-    {
-      pnr: "GS789012",
-      source: "Rajkot",
-      destination: "Vadodara",
-      journeyDate: "2025-11-12",
-      tripCode: "GJ-VOL999",
-      busClass: "Volvo AC",
-      seatNumbers: ["B2", "B3"],
-      passengers: ["Afroz Mansuri", "Zara Sheikh"],
-      totalFare: 1320,
-    },
-  ];
+  // const bookings = [
+  //   {
+  //     pnr: "GS123456",
+  //     source: "Ahmedabad",
+  //     destination: "Surat",
+  //     journeyDate: "2025-11-10",
+  //     tripCode: "GJ-EXP123",
+  //     busClass: "Express",
+  //     seatNumbers: ["A1", "A2"],
+  //     passengers: ["Afroz Mansuri", "Ali Khan"],
+  //     totalFare: 650,
+  //   },
+  //   {
+  //     pnr: "GS789012",
+  //     source: "Rajkot",
+  //     destination: "Vadodara",
+  //     journeyDate: "2025-11-12",
+  //     tripCode: "GJ-VOL999",
+  //     busClass: "Volvo AC",
+  //     seatNumbers: ["B2", "B3"],
+  //     passengers: ["Afroz Mansuri", "Zara Sheikh"],
+  //     totalFare: 1320,
+  //   },
+  // ];
 
-  const handleSearch = () => {
-    const booking = bookings.find((b) => b.pnr === pnr.trim().toUpperCase());
-    if (booking) {
-      setFoundBooking(booking);
-    } else {
-      alert("No booking found for this PNR.");
+  const handleSearch = async () => {
+    try {
+      const res = await axios.get("/api/ticket/requestedTicket", {
+        params: { pnr }
+      });
+
+      if (!res.data) {
+        alert("No booking found for this PNR.");
+        setFoundBooking(null);
+        return;
+      }
+
+      setBooking(res.data);
+      setFoundBooking(res.data);
+
+    } catch (error) {
+      alert("Invalid PNR or server error.");
       setFoundBooking(null);
     }
   };
+
 
   const handleCancel = () => {
     setShowModal(true);
@@ -71,13 +85,13 @@ const BookingCancellation = () => {
       {foundBooking && (
         <div className="booking-info">
           <h3>Booking Details</h3>
-          <p><strong>PNR:</strong> {foundBooking.pnr}</p>
-          <p><strong>Route:</strong> {foundBooking.source} ➜ {foundBooking.destination}</p>
-          <p><strong>Date:</strong> {foundBooking.journeyDate}</p>
           <p><strong>Trip Code:</strong> {foundBooking.tripCode}</p>
-          <p><strong>Class:</strong> {foundBooking.busClass}</p>
-          <p><strong>Seat Numbers:</strong> {foundBooking.seatNumbers.join(", ")}</p>
+          <p><strong>Route:</strong> {foundBooking.route}</p>
+          {/* <p><strong>PNR:</strong> {foundBooking.pnr}</p> */}
+          <p><strong>Date:</strong> {foundBooking.journeyDate}</p>
+          <p><strong>Class:</strong> {foundBooking.classType}</p>
           <p><strong>Passengers:</strong> {foundBooking.passengers.join(", ")}</p>
+          <p><strong>Seats:</strong> {foundBooking.seats.join(", ")}</p>
           <p><strong>Total Fare:</strong> ₹{foundBooking.totalFare}</p>
 
           <button className="cancel-btn" onClick={handleCancel}>

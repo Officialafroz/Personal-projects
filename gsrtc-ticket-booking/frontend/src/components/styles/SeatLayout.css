@@ -22,3 +22,10 @@
   color: white;
   transform: scale(1.1);
 }
+
+.seat.booked {
+  background-color: #6d6d6d !important;
+  cursor: not-allowed;
+  opacity: 0.6;
+  pointer-events: none;
+}

@@ -1,35 +1,73 @@
-import { useState, useEffect } from "react";
+import { useState, useContext } from "react";
 import "../styles/PaymentSummary.css";
+import PaymentConfirmModal from "./PaymentConfirmModal";
+import { AppContext } from "../../store/AppContext";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const PaymentSummary = ({ totalAmount, onClose }) => {
-  const [isPaid, setIsPaid] = useState(false);
+const PaymentSummary = ({ totalAmount }) => {
+  const { passengers, tripCode, setTripCode, user, busSearch } = useContext(AppContext);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const navigate = useNavigate();
 
-  const handlePayment = () => {
-    // Simulate payment process
-    setTimeout(() => {
-      setIsPaid(true);
-    }, 800);
+  const handlePaymentClick = () => {
+    setShowConfirm(true);
   };
 
-  useEffect(() => {
-    if (isPaid) {
-      // Automatically close modal after 2 seconds
-      const timer = setTimeout(() => {
-        onClose?.(); // Close modal if function is provided
-      }, 2000);
-      return () => clearTimeout(timer);
+  const handleConfirmPayment = async () => {
+    try {
+      setShowConfirm(false);
+
+      const bookingRes = await axios.post("/api/userBooking/add", {
+        email: user.email,
+        tripCode,
+        journeyDate: busSearch.journeyDate,
+        totalFare: totalAmount
+      });
+
+      const pnr = bookingRes.data;
+
+      await axios.post("/api/bookingPassenger/add", passengers, {
+        params: { tripCode, pnr }
+      });
+
+      const payRes = await axios.post("/api/bookingPayment/pay", null, {
+        params: { totalAmount, pnr }
+      });
+
+      console.log(payRes);
+
+      setTimeout(() => {
+        setIsSuccess(true);
+      }, 200);
+
+      // setTripCode("");    // resetting may cause re-render issues
+      navigate("/bus-booking");
+
+    } catch (err) {
+      console.error("Payment failed:", err);
     }
-  }, [isPaid, onClose]);
+  };
+
 
   return (
     <div className="payment-summary">
       <h3>Payment Summary</h3>
 
-      {!isPaid ? (
+      {passengers.map((p, index) => (
+        <p key={index}>
+          {p.fullName} (Seat {p.seat}) – ₹{p.fare}
+        </p>
+      ))}
+
+      <hr />
+
+      {!isSuccess ? (
         <>
-          <p>Total Fare: ₹{125}</p>
-          <button className="pay-btn" onClick={handlePayment}>
-            Pay ₹{125}
+          <h4>Total Fare: ₹{totalAmount}</h4>
+          <button className="pay-btn" onClick={handlePaymentClick}>
+            Pay ₹{totalAmount}
           </button>
         </>
       ) : (
@@ -37,7 +75,15 @@ const PaymentSummary = ({ totalAmount, onClose }) => {
           <h4>✅ Payment Successful!</h4>
           <p>Your booking has been confirmed.</p>
         </div>
+
       )}
+
+      {/* Confirmation Modal */}
+      <PaymentConfirmModal
+        isOpen={showConfirm}
+        onClose={() => setShowConfirm(false)}
+        onConfirm={handleConfirmPayment}
+      />
     </div>
   );
 };

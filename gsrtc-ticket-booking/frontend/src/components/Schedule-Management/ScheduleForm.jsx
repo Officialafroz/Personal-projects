@@ -72,7 +72,7 @@ const ScheduleForm = ({ routes, buses, onAddSchedule }) => {
         <option value="">Select Route</option>
         {routes.map((route) => (
           <option key={route.id} value={route.id}>
-            {route.from} → {route.to}
+            {route.from} → {route.to} ({route.classType})
           </option>
         ))}
       </select>

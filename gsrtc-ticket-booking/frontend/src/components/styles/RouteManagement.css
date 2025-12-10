@@ -66,6 +66,7 @@
   flex-grow: 1;
 }
 
+.route-form select,
 .route-form input[type="number"] {
   width: 90px;
 }
@@ -83,6 +84,7 @@
 
 /* Buttons */
 button {
+  /* min-width: 120px; */
   background: #238636;
   color: white;
   border: none;

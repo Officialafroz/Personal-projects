@@ -11,8 +11,8 @@ const RouteManagement = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterClass, setFilterClass] = useState("");
 
-  const addRoute = async (route) => {
-    await axios.post("/api/busRoute/addRoute", route);
+  const addRoute = async (route, duration) => {
+    await axios.post("/api/busRoute/addRoute", route, { params: { duration } });
 
     setRoutes([...routes, route]);
   };
@@ -36,8 +36,8 @@ const RouteManagement = () => {
       <div className="route-header">
         <h1>Route Management System</h1>
         <RouteForm addRoute={addRoute} />
-        <RouteFilters setSearchTerm={setSearchTerm} setFilterClass={setFilterClass} />
       </div>
+      <RouteFilters setSearchTerm={setSearchTerm} setFilterClass={setFilterClass} />
       <RouteList
         routes={filteredRoutes}
         setRoutes={setRoutes}
