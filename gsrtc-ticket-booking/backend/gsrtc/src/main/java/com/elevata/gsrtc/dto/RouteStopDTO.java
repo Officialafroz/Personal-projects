@@ -13,6 +13,7 @@ public class RouteStopDTO {
     private String stopName;
     private int stopOrder;
     private double distanceFromStart;
+    private int duration;
     private double fare;
     private int routeId;
 }
