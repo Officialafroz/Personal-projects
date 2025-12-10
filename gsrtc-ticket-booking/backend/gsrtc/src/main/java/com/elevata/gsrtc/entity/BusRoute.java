@@ -29,6 +29,12 @@ public class BusRoute {
     @Column(name = "class_type")
     private String classType;
 
+    @Column(name = "distance")
+    private double distance;
+
+    @Column(name = "duration")
+    private int duration;
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "depot_id")
