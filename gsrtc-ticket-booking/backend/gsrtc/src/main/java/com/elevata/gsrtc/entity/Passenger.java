@@ -37,19 +37,17 @@ public class Passenger {
     private String destinationPoint;
 
     @Column(name = "individual_fare")
-    private double individualFare = 0;
+    private double individualFare;
 
-    public Passenger(String name, int age, String gender, int seatNo,
-                     String boardingPoint, String destinationPoint) {
+    public Passenger(Booking booking, String name, int age, String gender, int seatNo,
+                     String boardingPoint, String destinationPoint, double individualFare) {
+        this.booking = booking;
         this.name = name;
         this.age = age;
-        if (gender.equals("male") || gender.equals("female")) {
-            this.gender = gender;
-        } else {
-            throw new RuntimeException("Invalid Gender : " + gender);
-        }
+        this.gender = gender;
         this.seatNo = seatNo;
         this.boardingPoint = boardingPoint;
         this.destinationPoint = destinationPoint;
+        this.individualFare = individualFare;
     }
 }
