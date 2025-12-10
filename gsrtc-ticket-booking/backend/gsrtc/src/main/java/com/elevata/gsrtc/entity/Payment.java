@@ -35,7 +35,7 @@ public class Payment {
 //    private List<Refund> refunds;
 
     @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
-    @JoinColumn(name = "regular_booking_id")
+    @JoinColumn(name = "booking_id")
     private Booking booking;
 
     public Payment(double amount, String paymentMethod, String status, String transactionRef) {
