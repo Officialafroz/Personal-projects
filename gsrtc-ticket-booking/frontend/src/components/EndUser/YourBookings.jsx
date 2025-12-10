@@ -1,106 +1,76 @@
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import "../styles/YourBookings.css";
+import { AppContext } from "../../store/AppContext";
 
 const YourBookings = () => {
+  const { user, ticketData, fetchTickets } = useContext(AppContext);
   const [filter, setFilter] = useState("");
-  const [bookings] = useState([
-    {
-      id: 1,
-      source: "Ahmedabad",
-      destination: "Surat",
-      journeyDate: "2025-11-10",
-      tripCode: "GJ-EXP123",
-      busClass: "Express",
-      boardingPoint: "Nehrunagar",
-      departureTime: "08:30 AM",
-      seats: 3,
-      seatNumbers: ["A1", "A2", "A3"],
-      passengers: ["Afroz Mansuri", "Ali Khan", "Sara Patel"],
-      fareDetails: {
-        baseFare: 900,
-        reservationFee: 50,
-        gst: 45,
-        discount: 30,
-        total: 965,
-      },
-    },
-    {
-      id: 2,
-      source: "Rajkot",
-      destination: "Vadodara",
-      journeyDate: "2025-11-12",
-      tripCode: "GJ-VOL999",
-      busClass: "Volvo AC",
-      boardingPoint: "Rajkot Central Bus Stop",
-      departureTime: "09:45 PM",
-      seats: 2,
-      seatNumbers: ["B2", "B3"],
-      passengers: ["Afroz Mansuri", "Zara Sheikh"],
-      fareDetails: {
-        baseFare: 1200,
-        reservationFee: 60,
-        gst: 60,
-        discount: 0,
-        total: 1320,
-      },
-    },
-  ]);
 
-  const filteredBookings = bookings.filter((b) => {
+  // Load tickets once using user email
+  useEffect(() => {
+    const email = user?.email;
+    if (email) fetchTickets(email);
+  }, []);
+
+  console.log(ticketData);
+
+  // Filter bookings based on search
+  const filteredBookings = ticketData.filter((b) => {
     const search = filter.toLowerCase();
     return (
-      b.source.toLowerCase().includes(search) ||
-      b.destination.toLowerCase().includes(search) ||
-      b.journeyDate.includes(search) ||
-      b.tripCode.toLowerCase().includes(search)
+      b.route?.toLowerCase().includes(search) ||
+      b.tripCode?.toLowerCase().includes(search) ||
+      b.classType?.toLowerCase().includes(search) ||
+      b.journeyDate?.includes(search)
     );
   });
 
+
+
   return (
-    <div className="your-bookings-container">
-      <div className="booking-filters">
+    <div className="yb-container">
+      {/* Search Bar */}
+      <div className="yb-search">
         <input
           type="text"
-          placeholder="Search by source, destination, date or tripcode..."
+          placeholder="Search by tripcode, route, date or class..."
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
         />
       </div>
 
-      <div className="bookings-list">
-        {filteredBookings.length > 0 ? (
-          filteredBookings.map((booking) => (
-            <div key={booking.id} className="booking-card">
-              <div className="booking-header">
-                <h3>
-                  {booking.source} ➜ {booking.destination}
-                </h3>
-                <p>{booking.journeyDate}</p>
+      {/* Ticket List */}
+      <div className="yb-list">
+        {ticketData.length > 0 ? (
+          ticketData.map((b, index) => (
+            <div key={index} className="yb-card">
+
+              {/* Header */}
+              <div className="yb-header">
+                <div>
+                  <h3>{b.route}</h3>
+                  <p className="yb-date">{b.journeyDate}</p>
+                </div>
+                <span className="yb-chip">{b.classType}</span>
               </div>
 
-              <div className="booking-details">
-                <p><strong>Trip Code:</strong> {booking.tripCode}</p>
-                <p><strong>Class:</strong> {booking.busClass}</p>
-                <p><strong>Boarding Point:</strong> {booking.boardingPoint}</p>
-                <p><strong>Departure Time:</strong> {booking.departureTime}</p>
-                <p><strong>No. of Seats:</strong> {booking.seats}</p>
-                <p><strong>Seat Numbers:</strong> {booking.seatNumbers.join(", ")}</p>
-                <p><strong>Passengers:</strong> {booking.passengers.join(", ")}</p>
+              {/* Trip Info */}
+              <div className="yb-block">
+                <p><strong>Trip Code:</strong> {b.tripCode}</p>
+                <p><strong>Boarding Time:</strong> {b.boardingTime ?? "—"}</p>
+                <p><strong>Seats:</strong> {b.seats.join(", ")}</p>
+                <p><strong>Passengers:</strong> {b.passengers.join(", ")}</p>
               </div>
 
-              <div className="fare-details">
-                <h4>Fare Details</h4>
-                <p>Base Fare: ₹{booking.fareDetails.baseFare}</p>
-                <p>Reservation Fee: ₹{booking.fareDetails.reservationFee}</p>
-                <p>GST: ₹{booking.fareDetails.gst}</p>
-                <p>Discount: -₹{booking.fareDetails.discount}</p>
-                <hr />
-                <p><strong>Total: ₹{booking.fareDetails.total}</strong></p>
+              {/* Fare */}
+              <div className="yb-fare-box">
+                <h4 className="f-summary">Fare Summary</h4>
+                <p className="yb-total">₹ {b.totalFare}</p>
               </div>
             </div>
           ))
         ) : (
-          <p className="no-bookings">No bookings found.</p>
+          <p className="yb-empty">No bookings found.</p>
         )}
       </div>
     </div>
