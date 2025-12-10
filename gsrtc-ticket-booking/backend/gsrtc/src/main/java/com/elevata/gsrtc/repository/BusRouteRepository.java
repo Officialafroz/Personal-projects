@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface BusRouteRepository extends JpaRepository<BusRoute, Integer> {
     List<BusRoute> findAllByBusDepotDepotId(int depotId);
+    BusRoute findById(int routeId);
 }
