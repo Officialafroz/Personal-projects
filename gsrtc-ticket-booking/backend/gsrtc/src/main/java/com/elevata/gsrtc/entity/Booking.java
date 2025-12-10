@@ -39,6 +39,9 @@ public class Booking {
     @Column(name = "booking_time")
     private LocalDateTime bookingTime;
 
+    @Column(name = "status")
+    private String status;
+
 //    @OneToMany(mappedBy = "booking",
 //               fetch = FetchType.LAZY,
 //               cascade = CascadeType.ALL)
