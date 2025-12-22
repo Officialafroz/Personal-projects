@@ -14,14 +14,16 @@ import java.util.List;
 @Service
 public class BookingPassengerService {
     private PassengerRepository passengerRepository;
+    private ReferenceNumberService refService;
     private TripRepository tripRepository;
     private BookingRepository bookingRepository;
     private RouteStopsRepository stopsRepository;
     private FareService fareService;
 
     @Autowired
-    public BookingPassengerService(PassengerRepository passengerRepository, TripRepository tripRepository, BookingRepository bookingRepository, RouteStopsRepository stopsRepository, FareService fareService) {
+    public BookingPassengerService(PassengerRepository passengerRepository, ReferenceNumberService refService, TripRepository tripRepository, BookingRepository bookingRepository, RouteStopsRepository stopsRepository, FareService fareService) {
         this.passengerRepository = passengerRepository;
+        this.refService = refService;
         this.tripRepository = tripRepository;
         this.bookingRepository = bookingRepository;
         this.stopsRepository = stopsRepository;
@@ -32,7 +34,8 @@ public class BookingPassengerService {
         Booking existingBooking = bookingRepository.findByPnr(pnr);
         System.out.println(passengers);
 
-        passengers.forEach(passenger -> {
+        int passNumber = 1;
+        for (PassengerDTO passenger : passengers) {
             Passenger psg = new Passenger(
                     existingBooking,
                     passenger.getFullName(),
@@ -41,14 +44,17 @@ public class BookingPassengerService {
                     passenger.getSeat(),
                     passenger.getBoardingPoint(),
                     passenger.getDestination(),
-                    passenger.getFare()
+                    passenger.getFare(),
+                    "CONFIRMED"
             );
+
+            psg.setPassRef(refService.generatePassengerRef(pnr, passNumber++));
 
             System.out.println(passenger.getFullName() + " : " + passenger.getSeat());
 
             passengerRepository.save(psg);
             System.out.println("Passenger " + psg.getName() + " added successfully");
-        });
+        }
 
         return "Passenger added.";
     }

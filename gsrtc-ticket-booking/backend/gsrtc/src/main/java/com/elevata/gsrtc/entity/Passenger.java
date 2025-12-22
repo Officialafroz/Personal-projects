@@ -30,6 +30,9 @@ public class Passenger {
     @Column(name = "seat_no")
     private int seatNo;
 
+    @Column(name = "pass_ref")
+    private String passRef;
+
     @Column(name = "boarding_point")
     private String boardingPoint;
 
@@ -39,8 +42,12 @@ public class Passenger {
     @Column(name = "individual_fare")
     private double individualFare;
 
+    @Column(name = "status")
+    private String status;
+
     public Passenger(Booking booking, String name, int age, String gender, int seatNo,
-                     String boardingPoint, String destinationPoint, double individualFare) {
+                     String boardingPoint, String destinationPoint, double individualFare,
+                     String status) {
         this.booking = booking;
         this.name = name;
         this.age = age;
@@ -49,5 +56,6 @@ public class Passenger {
         this.boardingPoint = boardingPoint;
         this.destinationPoint = destinationPoint;
         this.individualFare = individualFare;
+        this.status = status;
     }
 }

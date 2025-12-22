@@ -3,10 +3,8 @@ package com.elevata.gsrtc.controller;
 import com.elevata.gsrtc.dto.UserBookingDTO;
 import com.elevata.gsrtc.service.UserBookingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/userBooking")
@@ -21,5 +19,16 @@ public class UserBookingController {
     @PostMapping("/add")
     public String add(@RequestBody UserBookingDTO bookingDTO) {
         return bookingService.save(bookingDTO);
+    }
+
+    @DeleteMapping("/cancel/{reference}")
+    public ResponseEntity<String> cancelBooking(@PathVariable String reference) {
+        String response;
+        if (reference.length() == 10) {
+            response = bookingService.cancelBookingByPnr(reference);
+        } else {
+            response = bookingService.deletePassengerByPassRef(reference);
+        }
+        return ResponseEntity.ok(response);
     }
 }

@@ -5,19 +5,22 @@ import com.elevata.gsrtc.entity.Booking;
 import com.elevata.gsrtc.entity.Passenger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@Repository
+@Service
 public class PassengerService {
     private PassengerRepository passengerRepository;
     private BookingService bookingService;
+    private ReferenceNumberService numberService;
 
     @Autowired
-    public PassengerService(PassengerRepository passengerRepository, BookingService bookingService) {
+    public PassengerService(PassengerRepository passengerRepository, BookingService bookingService, ReferenceNumberService numberService) {
         this.passengerRepository = passengerRepository;
         this.bookingService = bookingService;
+        this.numberService = numberService;
     }
 
     public List<Passenger> findAll() {
@@ -39,14 +42,13 @@ public class PassengerService {
     }
 
     public void save(Passenger passenger) {
-        int bookingId = passenger.getBooking().getBookingId();
-
-        if (passenger.getBooking() != null && bookingId > 0) {
+        if (passenger.getBooking() != null && passenger.getBooking().getBookingId() > 0) {
+            int bookingId = passenger.getBooking().getBookingId();
             Booking existingBooking = bookingService.findById(bookingId);
 
             if (existingBooking == null) {
                 throw new RuntimeException(
-                        String.format("Invalid payment id - %d", bookingId));
+                        String.format("Invalid booking id - %d", bookingId));
             }
             passenger.setBooking(existingBooking);
         }
