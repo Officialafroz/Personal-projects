@@ -7,8 +7,8 @@ CREATE TABLE payment (
     status ENUM('PENDING', 'PAID', 'FAILED') DEFAULT 'PAID',
     transaction_ref VARCHAR(50) UNIQUE,
     payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    regular_booking_id INT,                               -- FK for regular tickets
-    FOREIGN KEY (regular_booking_id) REFERENCES Booking(booking_id) ON DELETE CASCADE
+    booking_id INT,                               -- FK for regular tickets
+    FOREIGN KEY (booking_id) REFERENCES Booking(booking_id) ON DELETE CASCADE
 );
 
 drop table payment;
