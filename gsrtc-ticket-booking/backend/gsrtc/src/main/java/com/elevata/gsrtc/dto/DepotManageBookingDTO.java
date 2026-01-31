@@ -1,4 +1,4 @@
 package com.elevata.gsrtc.dto;
 
-public class RevenueTrendDTO {
+public class BookingDTO {
 }
